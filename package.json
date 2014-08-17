@@ -25,5 +25,12 @@
       "url": "https://github.com/wanderer"
     }
   ],
-  "license": "GPL2"
+  "license": "GPL2",
+  "dependencies": {
+    "async": "^0.9.0",
+    "ethereum-lib": "0.0.12",
+    "leveldown": "^0.10.2",
+    "levelup": "^0.18.6",
+    "minimist": "^1.1.0"
+  }
 }
