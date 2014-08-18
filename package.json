@@ -32,6 +32,7 @@
     "leveldown": "*",
     "levelup": "*",
     "minimist": "*",
+    "nat-upnp": "^0.2.9",
     "npmlog": "*"
   }
 }

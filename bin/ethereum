@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-var App = require('../');
+var App = require('../'),
+  log = require('npmlog');
 
 var app = new App(),
   argv = require('minimist')(process.argv.slice(2));
@@ -13,5 +14,13 @@ if (argv.help) {
 if (argv.dumpbc) {
   app.dumpBlockChain();
 } else {
-  app.start();
+  app.start(function () {
+    process.on('SIGTERM', shutdown);
+    process.on('SIGINT', shutdown);
+  });
+}
+
+function shutdown() {
+  log.info('app', 'shutting down');
+  app.stop(process.exit);
 }
