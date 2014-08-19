@@ -28,6 +28,7 @@
   "license": "GPL2",
   "dependencies": {
     "async": "*",
+    "bip39": "^2.0.0",
     "ethereum-lib": "*",
     "leveldown": "*",
     "levelup": "*",
