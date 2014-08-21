@@ -28,12 +28,11 @@
   "license": "GPL2",
   "dependencies": {
     "async": "*",
-    "bip39": "^2.0.0",
     "ethereum-lib": "*",
     "leveldown": "*",
     "levelup": "*",
     "minimist": "*",
-    "nat-upnp": "^0.2.9",
+    "nat-upnp": "*",
     "npmlog": "*"
   }
 }
