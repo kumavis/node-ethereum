@@ -29,10 +29,14 @@
   "dependencies": {
     "async": "*",
     "ethereum-lib": "*",
+    "express": "^4.8.5",
+    "json-rpc2": "^0.8.1",
     "leveldown": "*",
     "levelup": "*",
     "minimist": "*",
     "nat-upnp": "*",
-    "npmlog": "*"
+    "npmlog": "*",
+    "through": "^2.3.4",
+    "websocket-stream": "^0.6.0"
   }
 }
