@@ -1,8 +1,10 @@
 {
-  "version": 25,
   "network": {
     "port": 30303,
     "host": "0.0.0.0"
   },
-  "upnp": true
+  "upnp": true,
+  "rpc": {
+    "port": 7000
+  }
 }
