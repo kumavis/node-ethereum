@@ -11,17 +11,13 @@ if (argv.help) {
   process.exit();
 }
 
-if (argv.dumpbc) {
-  app.dumpBlockChain();
-} else {
-  app.start(function (err) {
+app.start(function (err) {
 
-    if (err) log.error('start', err);
+  if (err) log.error('start', err);
 
-    process.on('SIGTERM', shutdown);
-    process.on('SIGINT', shutdown);
-  });
-}
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
+});
 
 function shutdown() {
   app.log.info('app', 'shutting down');
