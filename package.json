@@ -43,6 +43,6 @@
     "leveldown": "~0.10.0"
   },
   "devDependencies": {
-    "mocha": "^1.21.4"
+    "mocha": "*"
   }
 }
