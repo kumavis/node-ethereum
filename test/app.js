@@ -14,13 +14,13 @@ describe('basic app functions', function () {
     app.stop(done);
   });
 
-  it.only('should connect to another peer', function (done) {
+  it('should connect to another peer', function (done) {
     var count = 0,
       peers = [];
 
     async.whilst(
       function () {
-        return count < 2;
+        return count < 5;
       },
       function (callback) {
         var settings = {
@@ -35,7 +35,6 @@ describe('basic app functions', function () {
         count++;
 
         settings.network.port += count;
-        console.log(settings.network.port);
         settings.path = './test/testClient' + count;
 
         try{
