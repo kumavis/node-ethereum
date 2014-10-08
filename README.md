@@ -12,3 +12,13 @@ Install
 Run
 ===
 `./bin/ethereum`
+
+Embed
+===
+```javacsript
+ App = require('../')
+ app = new App();
+ app.start(function(){
+  console.log("Ethereum has started");
+ });
+```
