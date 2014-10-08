@@ -4,9 +4,11 @@ ethereum-client [![Build Status](https://travis-ci.org/wanderer/node-ethereum.sv
 a simple standalone or embeddable Ethereum client written for Node.js
 
 Install
+===
 `git clone https://github.com/wanderer/node-ethereum`  
 `cd ./node-ethereum`  
 `npm install .`
 
 Run
+===
 `./bin/ethereum`
