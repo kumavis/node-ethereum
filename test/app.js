@@ -5,6 +5,7 @@ var App = require('../'),
 var app;
 
 describe('basic app functions', function () {
+
   it('should start', function (done) {
     app = new App();
     app.start(done);
@@ -19,9 +20,11 @@ describe('basic app functions', function () {
       peers = [];
 
     async.whilst(
+
       function () {
         return count < 5;
       },
+
       function (callback) {
         var settings = {
           'network': {
@@ -46,7 +49,10 @@ describe('basic app functions', function () {
         app.start(callback);
 
       },
-      done
+
+      function(){
+        done();
+      }
     );
   });
 });
