@@ -2,10 +2,10 @@ var express = require('express'),
   request = require('request'),
   async = require('async'),
   shimServer = require('./shimServer.js'),
-  WebSocketServer = require('ws').Server;
+  WebSocketServer = require('ws').Server,
+  server;
 
 var app = express(),
-
   wss = new WebSocketServer({
     server: app
   });
@@ -41,5 +41,14 @@ app.get('*', function (req, res) {
 
 });
 
+//requires the ws plugin to work
+exports.requires = ['ws'];
 
-app.listen(3000);
+exports.start = function(done){
+  server = app.listen(3000);
+  done();
+};
+
+exports.stop = function(done){
+  server.close(done);
+};

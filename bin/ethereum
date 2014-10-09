@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 var log = require('npmlog'),
-  App = require('../');
+  App = require('../'),
+  settings  =require('./settings.json');
 
-var app = new App(),
+var app = new App(settings),
   argv = require('minimist')(process.argv.slice(2));
 
 if (argv.help) {
@@ -12,9 +13,7 @@ if (argv.help) {
 }
 
 app.start(function (err) {
-
   if (err) log.error('start', err);
-
   process.on('SIGTERM', shutdown);
   process.on('SIGINT', shutdown);
 });

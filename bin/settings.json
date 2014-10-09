@@ -1,3 +1,6 @@
 {
-  "logging": 3
+  "logging": 3,
+  "plugins": [
+    "../plugins/ws/ws.js"
+  ]
 }
