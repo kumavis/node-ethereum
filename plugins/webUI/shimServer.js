@@ -6,7 +6,7 @@ var express = require('express'),
   path = require('path'),
   fs = require('fs');
 
-var injectScript = '<script type="text/javascript">' + fs.readFileSync('./injectScript.js') + '</script>';
+var injectScript = '<script type="text/javascript">' + fs.readFileSync(__dirname + '/injectScript.js') + '</script>';
 
 module.exports = function (hostUrl, port, cb) {
   var parsedUrl = url.parse(hostUrl);

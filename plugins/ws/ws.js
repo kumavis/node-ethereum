@@ -2,7 +2,9 @@ var WebSocketServer = require('ws').Server,
   wss;
 
 //the function that starts the application
-exports.start = function (app, done) {
+exports.start = function (options, done) {
+
+  var self = this;
 
   wss = new WebSocketServer({
     port: 8084
@@ -11,6 +13,18 @@ exports.start = function (app, done) {
   wss.on('connection', function (ws) {
     ws.on('message', function (message) {
       console.log(message);
+
+      var command = JSON.parse(message);
+
+      if (command.method === 'toggleMining') {
+
+        self.toggleMining();
+
+        ws.send({
+          'result': true,
+          'id': command.id
+        });
+      }
       // app.rpc.runCall(message, function (result) {
       //   ws.send(result);
       // });
@@ -25,7 +39,7 @@ exports.start = function (app, done) {
   done();
 };
 
-exports.stop = function(done){
+exports.stop = function (done) {
   wss.close();
   done();
 };

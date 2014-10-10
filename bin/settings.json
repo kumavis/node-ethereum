@@ -1,6 +1,7 @@
 {
   "logging": 3,
   "plugins": [
-    "../plugins/ws/ws.js"
+    "../plugins/ws/ws.js",
+    "../plugins/webUI/"
   ]
 }

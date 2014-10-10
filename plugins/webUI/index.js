@@ -19,10 +19,10 @@ app.use('/public', express.static(__dirname + '/public'));
 app.set('view engine', 'jade');
 
 app.get('/', function (req, res) {
-  res.render('index.jade');
+  res.render(__dirname + '/views/index.jade');
 });
 
-app.get('*', function (req, res) {
+app.get('/proxy/*', function (req, res) {
 
   var url = req.url.slice(1),
     urlMatch = /^(https?|http?|file):\/\//;
@@ -34,7 +34,7 @@ app.get('*', function (req, res) {
 
   shimServer(url, 3000, function (port) {
     //load the page in a iframe
-    res.render('page', {
+    res.render(__dirname + '/views/page', {
       'url': 'http://localhost:' + port
     });
   });
@@ -44,7 +44,7 @@ app.get('*', function (req, res) {
 //requires the ws plugin to work
 exports.requires = ['ws'];
 
-exports.start = function(done){
+exports.start = function(eth, done){
   server = app.listen(3000);
   done();
 };

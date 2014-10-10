@@ -32,6 +32,7 @@
     "ethereumjs-lib": "^0.1.4",
     "express": "^4.8.5",
     "jayson": "~1.1.1",
+    "jquery": "^2.1.1",
     "leveldown": "~0.10.0",
     "levelup": "~0.19.0",
     "minimist": "*",
