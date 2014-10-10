@@ -1,4 +1,4 @@
-node-ethereum [![Build Status](https://travis-ci.org/wanderer/node-ethereum.svg?branch=master)](https://travis-ci.org/wanderer/node-ethereum)
+node-ethereum [![Build Status](https://travis-ci.org/ethereum/node-ethereum.svg)](https://travis-ci.org/ethereum/node-ethereum)
 ===============
 
 a simple standalone or embeddable Ethereum client written for Node.js.
