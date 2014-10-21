@@ -1,7 +1,7 @@
 {
   "logging": 3,
   "plugins": [
-    "../plugins/ws/ws.js",
+    "ne-wsapi",
     "../plugins/webUI/"
   ],
   "network": {
