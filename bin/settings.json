@@ -1,12 +1,9 @@
 {
   "logging": 3,
-  "plugins": [
-    "ne-wsapi",
-    "../plugins/webUI/"
-  ],
   "network": {
     "port": 30303,
     "host": "0.0.0.0"
   },
-  "upnp": true
+  "upnp": true,
+  "rpc": true
 }
