@@ -31,18 +31,14 @@
     "bignum": "^0.9.0",
     "ethereumjs-lib": "git+https://github.com/ethereum/ethereumjs-lib.git#develop",
     "express": "^4.8.5",
-    "jayson": "~1.1.1",
-    "jquery": "^2.1.1",
     "level": "^0.18.0",
     "minimist": "*",
     "mkdirp": "^0.5.0",
     "nat-upnp": "*",
-    "ne-wsapi": "git+https://github.com/ethereum/ne-wsapi",
     "npmlog": "*",
     "request": "^2.40.0",
     "semaphore": "~1.0.1",
-    "through": "^2.3.4",
-    "websocket-stream": "^0.6.0"
+    "ws": "^0.4.32"
   },
   "devDependencies": {
     "mocha": "*"
