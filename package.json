@@ -29,6 +29,7 @@
   "dependencies": {
     "async": "*",
     "bignum": "^0.9.0",
+    "ethen": "git+https://github.com/ethereum/ethen",
     "ethereumjs-lib": "git+https://github.com/ethereum/ethereumjs-lib.git#develop",
     "express": "^4.8.5",
     "level": "^0.18.0",
