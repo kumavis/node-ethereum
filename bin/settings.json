@@ -5,5 +5,9 @@
     "host": "0.0.0.0"
   },
   "upnp": true,
-  "rpc": true
+  "rpc": true,
+  "webui":{
+    "port": 21012,
+    "host": "localhost"
+  }
 }
