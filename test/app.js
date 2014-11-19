@@ -24,7 +24,7 @@ describe('basic app functions', function() {
     async.whilst(
 
       function() {
-        return count < 5;
+        return count < numberOfPeers;
       },
 
       function(callback) {
@@ -45,7 +45,7 @@ describe('basic app functions', function() {
           fs.mkdirSync(settings.path);
         } catch (e) {}
 
-        var app = new App(settings);
+        app = new App(settings);
         peers.push(app);
         app.start(callback);
 
@@ -58,11 +58,42 @@ describe('basic app functions', function() {
   });
 
   it('two peers should connect to each other', function(done) {
+    async.parallel([
+      function(cb2) {
+        peers[1].network.once('message.hello', function() {
+          cb2();
+        });
+      },
+      function(cb2){
+        peers[0].network.once('message.hello', function() {
+          cb2();
+        });
+      }
+    ], done);
 
-    peers[1].network.on('message.hello', function() {
-      done();
-    });
     peers[0].network.connect(startPort + 2, '0.0.0.0');
-
   });
+
+  it('if a third peer joins then first two peers should both connect to it', function(done) {
+    async.parallel([
+      function(cb2) {
+        peers[2].network.once('message.hello', function() {
+          cb2();
+        });
+      },
+      function(cb2) {
+        peers[1].network.once('message.hello', function() {
+          cb2();
+        });
+      },
+      function(cb2){
+        peers[0].network.once('message.hello', function() {
+          cb2();
+        });
+      }
+    ], done);
+
+    peers[2].network.connect(startPort + 1, '0.0.0.0');
+  });
+
 });
