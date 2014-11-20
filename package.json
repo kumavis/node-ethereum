@@ -13,8 +13,7 @@
     "ethereum-client": "data.js"
   },
   "scripts": {
-    "test2": "./script/eslint.sh",
-    "test": "mocha --timeout 5000 --reporter spec ./test/app.js"
+    "test": "./script/eslint.sh && mocha --timeout 5000 --reporter spec ./test/app.js"
   },
   "keywords": [
     "ethereum"
