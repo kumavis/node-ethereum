@@ -13,8 +13,7 @@
     "ethereum-client": "data.js"
   },
   "scripts": {
-    "test2": "./script/eslint.sh",
-    "test": "mocha --timeout 5000 --reporter spec ./test/app.js"
+    "test": "./script/eslint.sh && mocha --timeout 5000 --reporter spec ./test/app.js"
   },
   "keywords": [
     "ethereum"
@@ -39,6 +38,7 @@
     "nat-upnp": "*",
     "npmlog": "*",
     "request": "^2.40.0",
+    "secp256k1": "0.0.12",
     "semaphore": "~1.0.1",
     "ws": "^0.4.32"
   },
