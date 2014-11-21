@@ -64,7 +64,7 @@ describe('basic app functions', function() {
           cb2();
         });
       },
-      function(cb2){
+      function(cb2) {
         peers[0].network.once('message.hello', function() {
           cb2();
         });
@@ -86,7 +86,7 @@ describe('basic app functions', function() {
           cb2();
         });
       },
-      function(cb2){
+      function(cb2) {
         peers[0].network.once('message.hello', function() {
           cb2();
         });
@@ -96,4 +96,15 @@ describe('basic app functions', function() {
     peers[2].network.connect(startPort + 1, '0.0.0.0');
   });
 
+  it.skip('should send only peers that the peer does\'t know about on getPeers', function(done) {
+
+    peers[3].max =1 
+
+    peers[3].network.on('message.getPeers', function(peers){
+      peers === 4
+    });
+
+    peers[3].network.connect(startPort + 1, '0.0.0.0');
+    
+  });
 });
