@@ -60,12 +60,12 @@ describe('basic app functions', function() {
   it('two peers should connect to each other', function(done) {
     async.parallel([
       function(cb2) {
-        peers[1].network.once('message.hello', function() {
+        peers[1].network.once('hello', function() {
           cb2();
         });
       },
       function(cb2) {
-        peers[0].network.once('message.hello', function() {
+        peers[0].network.once('hello', function() {
           cb2();
         });
       }
@@ -77,17 +77,17 @@ describe('basic app functions', function() {
   it('if a third peer joins then first two peers should both connect to it', function(done) {
     async.parallel([
       function(cb2) {
-        peers[2].network.once('message.hello', function() {
+        peers[2].network.once('hello', function() {
           cb2();
         });
       },
       function(cb2) {
-        peers[1].network.once('message.hello', function() {
+        peers[1].network.once('hello', function() {
           cb2();
         });
       },
       function(cb2) {
-        peers[0].network.once('message.hello', function() {
+        peers[0].network.once('hello', function() {
           cb2();
         });
       }
@@ -98,13 +98,14 @@ describe('basic app functions', function() {
 
   it.skip('should send only peers that the peer does\'t know about on getPeers', function(done) {
 
-    peers[3].max =1 
+    // peers[3].max =1
 
-    peers[3].network.on('message.getPeers', function(peers){
-      peers === 4
-    });
+    // peers[3].network.on('getPeers', function(peers){
+    //   peers === 4
+    // });
 
-    peers[3].network.connect(startPort + 1, '0.0.0.0');
-    
+    // peers[3].network.connect(startPort + 1, '0.0.0.0');
+    done();
+
   });
 });
