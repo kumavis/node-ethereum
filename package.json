@@ -1,5 +1,5 @@
 {
-  "name": "ethereum-client",
+  "name": "node-ethereum",
   "version": "0.0.0",
   "description": "a simple standalone or embeddable Ethereum client written for Node.js",
   "repository": {
@@ -13,7 +13,7 @@
     "ethereum-client": "data.js"
   },
   "scripts": {
-    "test": "mocha --timeout 5000 --reporter spec ./test/app.js"
+    "test": "./script/eslint.sh && mocha --timeout 5000 --reporter spec ./test/app.js"
   },
   "keywords": [
     "ethereum"
@@ -29,21 +29,24 @@
   "dependencies": {
     "async": "*",
     "bignum": "^0.9.0",
-    "ethereumjs-lib": "^0.1.5",
+    "ethen": "git+https://github.com/ethereum/ethen",
+    "ethereumjs-lib": "git+https://github.com/ethereum/ethereumjs-lib.git#develop",
     "express": "^4.8.5",
     "jayson": "~1.1.1",
     "jquery": "^2.1.1",
     "leveldown": "^1.0.0",
     "levelup": "git+https://github.com/rvagg/node-levelup.git#1.0.0-wip",
     "minimist": "*",
-    "nat-upnp": "*",
+    "mkdirp": "^0.5.0",
+    "nat-upnp": "0.2.11",
     "npmlog": "*",
     "request": "^2.40.0",
+    "secp256k1": "0.0.13",
     "semaphore": "~1.0.1",
-    "through": "^2.3.4",
-    "websocket-stream": "^0.6.0"
+    "ws": "^0.4.32"
   },
   "devDependencies": {
+    "eslint": "^0.9.2",
     "mocha": "*"
   }
 }
