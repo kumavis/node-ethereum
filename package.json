@@ -18,12 +18,10 @@
   "keywords": [
     "ethereum"
   ],
-  "author": [
-    {
-      "name": "Martin Becze",
-      "email": "mjbecze@gmail.com",
-      "url": "https://github.com/wanderer"
-    }
+  "contributors":[
+    "Martin Becze <wanderer.github.io> (github.com/wanderer)",
+    "Ethers (github.com/ethers)",
+    "Jacob Payne <http://latrasis.com> (github.com/latrasis)"
   ],
   "license": "GPL2",
   "dependencies": {
