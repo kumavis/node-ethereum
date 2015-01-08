@@ -35,10 +35,10 @@
     "level": "^0.18.0",
     "minimist": "*",
     "mkdirp": "^0.5.0",
-    "nat-upnp": "*",
+    "nat-upnp": "0.2.11",
     "npmlog": "*",
     "request": "^2.40.0",
-    "secp256k1": "0.0.12",
+    "secp256k1": "0.0.13",
     "semaphore": "~1.0.1",
     "ws": "^0.4.32"
   },
