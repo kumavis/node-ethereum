@@ -4,6 +4,9 @@
     "port": 30303,
     "host": "0.0.0.0"
   },
+  "db": {
+    "port": 30304
+  }
   "upnp": true,
   "rpc": true,
   "webui":false

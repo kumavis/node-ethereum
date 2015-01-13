@@ -3,14 +3,13 @@
 var log = require('npmlog'),
   App = require('../');
 
-var settings,
-  path = process.env['HOME'] + '/.ethereum-node';
+var path = process.env['HOME'] + '/.ethereum/node';
 
 //try to load settings from home dir. or use the the standlone default settings
 try {
-  settings = require(path + '/settings.json');
+  var settings = require(path + '/settings.json');
 } catch (e) {
-  settings = require('./settings.json');
+  var settings = require('./settings.json');
 }
 
 var app = new App(settings),
