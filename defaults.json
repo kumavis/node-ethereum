@@ -1,6 +1,14 @@
 {
+  "logging": 3,
   "network": {
     "port": 30303,
     "host": "0.0.0.0"
-  }
+  },
+  "db": {
+    "port": 30304
+  },
+  "dbServer": true, 
+  "webui":false,
+  "upnp": false,
+  "rpc": false
 }

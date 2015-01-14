@@ -1,11 +1,13 @@
 var App = require('../'),
   fs = require('fs'),
+  cp = require('child_process'),
   async = require('async');
 
 var app,
   peers = [],
   numberOfPeers = 5, //the amount of peers to create in this test must be more than 3 for the tests to work properly
-  startPort = 30316;
+  startPort = 30316,
+  dbServer;
 
 describe('basic app functions', function() {
 
@@ -16,6 +18,17 @@ describe('basic app functions', function() {
 
   it('should stop', function(done) {
     app.stop(done);
+  });
+
+  it('should it should state the db server', function(done) {
+    try {
+      fs.mkdirSync(__dirname + '/testdb' );
+    } catch (e) {}
+
+    dbServer = cp.fork(__dirname + '/../bin/dbServer', ['--port', 30304, '--path', __dirname + '/testdb' ]) 
+    dbServer.on('message', function(){
+      done(); 
+    });
   });
 
   it('should start serveral instances', function(done) {
@@ -33,17 +46,13 @@ describe('basic app functions', function() {
             'port': startPort,
             'host': '0.0.0.0'
           },
+          'dbServer': false,
           'upnp': false,
           'rpc': false
         };
 
         count++;
         settings.network.port += count;
-        settings.path = './test/testClient' + count;
-
-        try {
-          fs.mkdirSync(settings.path);
-        } catch (e) {}
 
         app = new App(settings);
         peers.push(app);
@@ -107,5 +116,9 @@ describe('basic app functions', function() {
     // peers[3].network.connect(startPort + 1, '0.0.0.0');
     done();
 
+  });
+
+  it('the database should shutdown', function(){
+    dbServer.kill();
   });
 });

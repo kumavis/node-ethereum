@@ -6,8 +6,9 @@
   },
   "db": {
     "port": 30304
-  }
+  },
+  "dbServer": true, 
+  "webui":false,
   "upnp": true,
-  "rpc": true,
-  "webui":false
+  "rpc": true
 }

@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+var log = require('npmlog');
+var argv = require('minimist')(process.argv.slice(2));
+var multilevel = require('multilevel');
+var net = require('net');
+var level = require('levelup');
+var Sublevel = require('level-sublevel');
+
+//kill debugger
+// process._debugEnd();
+
+if (argv.help) {
+  console.log('TODO: write help');
+  process.exit();
+}
+
+console.log(argv);
+
+var port = argv.port
+var path = argv.path
+var db =  Sublevel(level(path));
+
+db.sublevel('state');
+db.sublevel('blocks');
+db.sublevel('details');
+
+net.createServer(function (con) {
+  con.pipe(multilevel.server(db)).pipe(con);
+}).listen(port, function () {
+  if(process.send){
+    process.send('started');
+  }else{
+    console.log('db started');
+  }
+});
+
