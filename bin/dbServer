@@ -23,6 +23,7 @@ var db =  Sublevel(level(path));
 db.sublevel('state');
 db.sublevel('blocks');
 db.sublevel('details');
+db.sublevel('peers');
 
 net.createServer(function (con) {
   con.pipe(multilevel.server(db)).pipe(con);
