@@ -14,8 +14,6 @@ if (argv.help) {
   process.exit();
 }
 
-console.log(argv);
-
 var port = argv.port
 var path = argv.path
 var db =  Sublevel(level(path));
