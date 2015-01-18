@@ -5,10 +5,21 @@
     "rules": {
        "strict": 0,
        "no-underscore-dangle": 0,
+       "no-comma-dangle": 0,
        "curly": 0,
        "new-cap": 0,
-       "handle-callback-err": 1,
-       "quotes":  [2, "single"]
+       "no-use-before-define": 0,
+       "quotes":  [1, "single"],
+       "no-trailing-spaces": 1,
+       "no-path-concat": 1,
+       "semi": 1,
+       "space-infix-ops": 1,
+       "no-unused-vars": 1,
+       "eol-last": 1,
+       "no-undef": 1,
+       "camelcase": 1,
+       "key-spacing": 1,
+       "handle-callback-err": 2
     },
     "globals":{
         "it": false,
