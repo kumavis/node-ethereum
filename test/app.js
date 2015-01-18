@@ -1,5 +1,6 @@
 var App = require('../'),
   fs = require('fs'),
+  path = require('path'),
   cp = require('child_process'),
   async = require('async');
 
@@ -22,12 +23,12 @@ describe('basic app functions', function() {
 
   it('should it should state the db server', function(done) {
     try {
-      fs.mkdirSync(__dirname + '/testdb' );
+      fs.mkdirSync(path.join(__dirname,'/testdb'));
     } catch (e) {}
 
-    dbServer = cp.fork(__dirname + '/../bin/dbServer', ['--port', 30304, '--path', __dirname + '/testdb' ]) 
+    dbServer = cp.fork(path.join(__dirname, '/../bin/dbServer'), ['--port', 30304, '--path', path.join(__dirname, '/testdb') ]);
     dbServer.on('message', function(){
-      done(); 
+      done();
     });
   });
 
