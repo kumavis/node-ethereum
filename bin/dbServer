@@ -6,8 +6,6 @@ var net = require('net');
 var level = require('levelup');
 var Sublevel = require('level-sublevel');
 
-//kill debugger
-// process._debugEnd();
 
 if (argv.help) {
   console.log('TODO: write help');
@@ -32,4 +30,3 @@ net.createServer(function (con) {
     console.log('db started');
   }
 });
-
