@@ -1,32 +1,63 @@
 #!/usr/bin/env node
-var log = require('npmlog');
 var argv = require('minimist')(process.argv.slice(2));
 var multilevel = require('multilevel');
 var net = require('net');
 var level = require('levelup');
 var Sublevel = require('level-sublevel');
-
+var enableDestroy = require('server-destroy');
 
 if (argv.help) {
-  console.log('TODO: write help');
+  var help = 'Usage <path> <port> [<host>] \n'
+  + 'Start the DB server for node-Ethereum \n'
+  + '  <path>   The path to the DB \n'
+  + '  <port>   The port that the DB server listening to \n';
+
+  console.log(help);
   process.exit();
 }
 
-var port = argv.port
-var path = argv.path
-var db =  Sublevel(level(path));
+
+if(!argv._[0]){
+  console.log('<port> and <path> path is required');
+  process.exit();
+}else if(!argv._[1]){
+  console.log('<port> is required');
+  process.exit();
+}
+
+var port = argv._[1];
+var path = argv._[0];
+var db = Sublevel(level(path));
+var isShutingDown = false;
 
 db.sublevel('state');
 db.sublevel('blocks');
 db.sublevel('details');
 db.sublevel('peers');
 
-net.createServer(function (con) {
+var server = net.createServer(function (con) {
   con.pipe(multilevel.server(db)).pipe(con);
-}).listen(port, function () {
+});
+
+enableDestroy(server);
+
+server.listen(port, function () {
+  process.once('SIGTERM', shutdown);
+  process.once('SIGINT', shutdown);
+  console.log('dbServer - started: /:' + port );
   if(process.send){
     process.send('started');
-  }else{
-    console.log('db started');
   }
 });
+
+function shutdown (){
+  if(!isShutingDown){
+    isShutingDown = true;
+    server.destroy(function(){
+      console.log('dbServer - closed');
+      if(process.send){
+        process.send('shutDown');
+      }
+    });
+  }
+}

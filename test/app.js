@@ -21,7 +21,7 @@ describe('basic app functions', function() {
     app.stop(done);
   });
 
-  it('should it should state the db server', function(done) {
+  it('should it should start the db server', function(done) {
     try {
       fs.mkdirSync(path.join(__dirname,'/testdb'));
     } catch (e) {}
