@@ -23,7 +23,7 @@ describe('basic app functions', function() {
 
   it('should it should start the db server', function(done) {
     try {
-      fs.mkdirSync(path.join(__dirname,'/testdb'));
+      fs.mkdirSync(path.join(__dirname, '/testdb'));
     } catch (e) {}
 
     dbServer = cp.fork(path.join(__dirname, '/../bin/dbServer'), [path.join(__dirname, '/testdb'), 30304]);
@@ -58,7 +58,6 @@ describe('basic app functions', function() {
         app = new App(settings);
         peers.push(app);
         app.start(callback);
-
       },
 
       function() {
