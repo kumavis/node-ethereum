@@ -1,20 +1,33 @@
-var jayson = require('jayson');
-var App = require('../');
-var settings = require('./settings.json');
+var App = require('../'),
+  fs = require('fs'),
+  path = require('path'),
+  cp = require('child_process'),
+  async = require('async'),
+  Block = require('ethereumjs-lib').Block,
+  jsonBC = require('ethereum-tests').blockTests.basicBlockChain.blockchain;
 
-var client = jayson.client.tcp({
-  port: settings.rpc.port,
-  hostname: 'localhost'
-});
+var app;
+describe('basic app functions', function() {
 
-var app = new App(settings);
-var address = "661005d2720d855f1d9976f88bb10c1a3398c77f";
-
-app.start(function () {
-  client.request('getStateAt', ['0x661005d2720d855f1d9976f88bb10c1a3398c77f', '0'], function (err, error, res) {
-    console.log(res);
-
-    app.stop();
-
+  it('should start', function(done) {
+    app = new App();
+    app.start(done);
   });
+
+  it('should load the blockchain', function(done){
+    var blocks = [];
+    jsonBC.reverse();
+    //lets only process 4 blocks
+    jsonBC.slice(0, 4);
+    jsonBC.forEach(function(json){
+      blocks.push(new Block(json));
+    });
+
+    app.processBlocks(blocks, done);
+  });
+
+  it('should stop', function(done) {
+    app.stop(done);
+  });
+
 });
