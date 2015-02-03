@@ -2,7 +2,7 @@ var App = require('../'),
   assert = require('assert'),
   Ws = require('ws'),
   Block = require('ethereumjs-lib').Block,
-  jsonBC = require('ethereum-tests').blockTests.basicBlockChain.blockchain;
+  jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
 
 var app;
 var settings = {
