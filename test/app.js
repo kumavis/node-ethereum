@@ -27,7 +27,7 @@ describe('basic app functions', function() {
     } catch (e) {}
 
     dbServer = cp.fork(path.join(__dirname, '/../bin/dbServer'), [path.join(__dirname, '/testdb'), 30304]);
-    dbServer.on('message', function(){
+    dbServer.once('message', function(){
       done();
     });
   });
@@ -116,6 +116,12 @@ describe('basic app functions', function() {
     // peers[3].network.connect(startPort + 1, '0.0.0.0');
     done();
 
+  });
+
+  it('should shut down peers', function(done){
+    async.each(peers, function(peer, done2){
+      peer.stop(done2);
+    }, done);
   });
 
   it('the database should shutdown', function(){

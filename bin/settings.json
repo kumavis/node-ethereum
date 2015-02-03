@@ -10,5 +10,8 @@
   "dbServer": true, 
   "webui":false,
   "upnp": true,
-  "rpc": true
+  "rpc": true,
+  "ws": {
+    "port" : 40404
+  }
 }

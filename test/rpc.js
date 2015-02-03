@@ -1,29 +1,83 @@
 var App = require('../'),
-  fs = require('fs'),
-  path = require('path'),
-  cp = require('child_process'),
-  async = require('async'),
+  assert = require('assert'),
+  Ws = require('ws'),
   Block = require('ethereumjs-lib').Block,
   jsonBC = require('ethereum-tests').blockTests.basicBlockChain.blockchain;
 
 var app;
+var settings = {
+  'network': false,
+  'db': {
+    'port': 30304
+  },
+  'dbServer': true,
+  'webui': false,
+  'upnp': false,
+  'rpc': true,
+  'ws': {
+    'port': 40401
+  }
+};
+
+var ws;
+
 describe('basic app functions', function() {
 
   it('should start', function(done) {
-    app = new App();
+    app = new App(settings);
     app.start(done);
   });
 
-  it('should load the blockchain', function(done){
+
+  it('should load the blockchain', function(done) {
     var blocks = [];
     jsonBC.reverse();
     //lets only process 4 blocks
-    jsonBC.slice(0, 4);
-    jsonBC.forEach(function(json){
+    jsonBC = jsonBC.slice(0, 4);
+    jsonBC.forEach(function(json) {
       blocks.push(new Block(json));
     });
 
     app.processBlocks(blocks, done);
+  });
+
+  it('should connect to the ws rpc', function(done) {
+    ws = new Ws('ws://localhost:' + settings.ws.port);
+    ws.on('open', function open() {
+      done();
+    });
+  });
+
+  it('it should get the peer count', function(done) {
+    var cmd = {
+      'method': 'eth_peerCount',
+      'params': [],
+      'jsonrpc': '2.0',
+      'id': 0
+    };
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert.equal(msg.id, 0);
+      assert.equal(msg.result, 0);
+      done();
+    });
+  });
+
+  it('balanceAt should work', function(done) {
+    var cmd = {
+      'method': 'eth_balanceAt',
+      'params': ['0f3388f4f086ca1666919a3e104d4335b915928e'],
+      'jsonrpc': '2.0',
+      'id': 1
+    };
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert.equal(msg.id, 1);
+      assert.equal(msg.result, '0de0b6b3a7640000');
+      done();
+    });
   });
 
   it('should stop', function(done) {
