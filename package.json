@@ -47,7 +47,7 @@
     "semaphore": "~1.0.1",
     "server-destroy": "^1.0.0",
     "sublevel": "^2.4.0",
-    "ws": "^0.4.32"
+    "ws": "git+https://github.com/wanderer/ws"
   },
   "devDependencies": {
     "eslint": "^0.9.2",
