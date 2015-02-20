@@ -24,6 +24,12 @@ app.start(function (err) {
   if (err) log.error('start', err);
   process.on('SIGTERM', shutdown);
   process.on('SIGINT', shutdown);
+  
+  if(argv.address){
+    const port = argv.port : argv.port ? 30303;
+    app.network.connect(argv.address, port);
+  }
+
 });
 
 function shutdown() {
