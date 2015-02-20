@@ -26,7 +26,7 @@ app.start(function (err) {
   process.on('SIGINT', shutdown);
   
   if(argv.address){
-    const port = argv.port : argv.port ? 30303;
+    const port = argv.port ? argv.port : 30303;
     app.network.connect(argv.address, port);
   }
 
