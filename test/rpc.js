@@ -6,7 +6,7 @@ var App = require('../'),
 
 var app;
 var settings = {
-  'network': true,
+  'network': false,
   'db': {
     'port': 30304
   },
