@@ -9,9 +9,6 @@
   "homepage": "https://github.com/wanderer/ethereum-client",
   "bugs": "https://github.com/wanderer/ethereum-client/issues",
   "main": "index.js",
-  "bin": {
-    "ethereum-client": "data.js"
-  },
   "scripts": {
     "test": "./script/eslint.sh && mocha --timeout 5000 --reporter spec ./test/*.js"
   },
