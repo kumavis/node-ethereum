@@ -2,7 +2,8 @@ var App = require('../'),
   assert = require('assert'),
   Ws = require('ws'),
   Block = require('ethereumjs-lib').Block,
-  jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
+  jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain,
+  allotment = require('ethereum-tests').blockchainTests.basicBlockChain.allotment;
 
 var app;
 var settings = {
@@ -28,6 +29,13 @@ describe('basic app functions', function() {
     app.start(done);
   });
 
+  it('should generate genesis', function(done) {
+    app.vm.generateGenesis(allotment, function(){
+      var block = new Block();
+      block.header.stateRoot = app.vm.trie.root;
+      app.blockchain.addBlock(block, done);
+    });
+  });
 
   it('should load the blockchain', function(done) {
     var blocks = [];
