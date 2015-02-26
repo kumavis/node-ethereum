@@ -104,6 +104,22 @@ describe('basic app functions', function() {
     });
   });
 
+  // it('should make a call', function(done) {
+  //   var cmd = {
+  //     'method': 'eth_balanceAt',
+  //     'params': ['8888f1f195afa192cfee860698584c030f4c9db1', 'da0bc84f4881690dcfbd8cfe5201ae729698e318397ab71df29fb0c42064fd04'],
+  //     'jsonrpc': '2.0',
+  //     'id': 2
+  //   };
+  //   ws.send(JSON.stringify(cmd));
+  //   ws.once('message', function(msg) {
+  //     msg = JSON.parse(msg);
+  //     assert.equal(msg.id, 2);
+  //     assert.equal(msg.result, '059fd3ff87f1676000');
+  //     done();
+  //   });
+  // });
+
   it('should stop', function(done) {
     app.stop(done);
   });
