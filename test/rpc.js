@@ -1,9 +1,14 @@
-var App = require('../'),
-  assert = require('assert'),
-  Ws = require('ws'),
-  Block = require('ethereumjs-lib').Block,
-  jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain,
-  allotment = require('ethereum-tests').blockchainTests.basicBlockChain.allotment;
+const App = require('../');
+const assert = require('assert');
+const Ws = require('ws');
+const Block = require('ethereumjs-lib').Block;
+const Account = require('ethereumjs-lib').Account;
+const Tx = require('ethereumjs-lib').Transaction;
+const jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
+const allotment = require('ethereum-tests').blockchainTests.basicBlockChain.allotment;
+const crypto = require('crypto');
+const ethUtil = require('ethereumjs-util');
+const ecdsa = require('secp256k1');
 
 var app;
 var settings = {
@@ -100,6 +105,49 @@ describe('basic app functions', function() {
       msg = JSON.parse(msg);
       assert.equal(msg.id, 2);
       assert.equal(msg.result, '059fd3ff87f1676000');
+      done();
+    });
+  });
+
+  it('shoud send a transation', function(done) {
+
+    var privateKey = crypto.randomBytes(32);
+    var address = ethUtil.pubToAddress(ecdsa.createPublicKey(privateKey));
+    var mulContract = '602b80600b60003960365660003560001a60008114156029576001356040526021356060526060516040510260805260206080f35b505b6000f3';
+
+
+    function populateTrie(cb){
+      var account = new Account();
+      account.balance = 'ffffff';
+      console.log('add:   ' + address.toString('hex'));
+      app.vm.trie.put(address, account.serialize(), cb); 
+    }
+
+    function sendTx(){
+      var tx = new Tx({
+        data: mulContract,
+        gasLimit: 5000,
+        gasPrice: 1,
+        nonce: 0
+      })
+
+      tx.sign(privateKey);
+      console.log('sender:' + tx.getSenderAddress().toString('hex'))
+
+      cmd = {
+        'method': 'eth_signed_trans',
+        'params': [tx.serialize().toString('hex')],
+        'jsonrpc': '2.0',
+        'id': 2
+      } 
+      ws.send(JSON.stringify(cmd));
+    }
+
+    populateTrie(sendTx);
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      console.log(msg);
       done();
     });
   });
