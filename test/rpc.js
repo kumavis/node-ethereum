@@ -4,7 +4,7 @@ const Ws = require('ws');
 const Block = require('ethereumjs-lib').Block;
 const Account = require('ethereumjs-lib').Account;
 const Tx = require('ethereumjs-lib').Transaction;
-const jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
+var jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
 const allotment = require('ethereum-tests').blockchainTests.basicBlockChain.allotment;
 const crypto = require('crypto');
 const ethUtil = require('ethereumjs-util');
@@ -26,6 +26,7 @@ var settings = {
 };
 
 var ws;
+var mulAddress;
 
 describe('basic app functions', function() {
 
@@ -114,12 +115,11 @@ describe('basic app functions', function() {
     var privateKey = crypto.randomBytes(32);
     var address = ethUtil.pubToAddress(ecdsa.createPublicKey(privateKey));
     var mulContract = '602b80600b60003960365660003560001a60008114156029576001356040526021356060526060516040510260805260206080f35b505b6000f3';
-
+    mulAddress = ethUtil.generateAddress(address, new Buffer([1]));
 
     function populateTrie(cb){
       var account = new Account();
       account.balance = 'ffffff';
-      console.log('add:   ' + address.toString('hex'));
       app.vm.trie.put(address, account.serialize(), cb); 
     }
 
@@ -132,7 +132,6 @@ describe('basic app functions', function() {
       })
 
       tx.sign(privateKey);
-      console.log('sender:' + tx.getSenderAddress().toString('hex'))
 
       cmd = {
         'method': 'eth_signed_trans',
@@ -147,26 +146,26 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      console.log(msg);
       done();
     });
   });
 
-  // it('should make a call', function(done) {
-  //   var cmd = {
-  //     'method': 'eth_balanceAt',
-  //     'params': ['8888f1f195afa192cfee860698584c030f4c9db1', 'da0bc84f4881690dcfbd8cfe5201ae729698e318397ab71df29fb0c42064fd04'],
-  //     'jsonrpc': '2.0',
-  //     'id': 2
-  //   };
-  //   ws.send(JSON.stringify(cmd));
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     assert.equal(msg.id, 2);
-  //     assert.equal(msg.result, '059fd3ff87f1676000');
-  //     done();
-  //   });
-  // });
+  it('should make a call', function(done) {
+    var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
+    var cmd = {
+      'method': 'eth_call',
+      'params': {to: mulAddress.toString('hex'), data: data},
+      'jsonrpc': '2.0',
+      'id': 2
+    };
+
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert(msg.result === '0000000000000000000000000000000000000000000000000000000000090000');
+      done();
+    });
+  });
 
   it('should stop', function(done) {
     app.stop(done);
