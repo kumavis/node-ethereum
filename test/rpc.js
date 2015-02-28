@@ -134,7 +134,7 @@ describe('basic app functions', function() {
       tx.sign(privateKey);
 
       cmd = {
-        'method': 'eth_signed_trans',
+        'method': 'eth_signedTransact',
         'params': [tx.serialize().toString('hex')],
         'jsonrpc': '2.0',
         'id': 2
