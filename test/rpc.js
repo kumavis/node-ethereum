@@ -146,6 +146,7 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
+      //check something?
       done();
     });
   });
