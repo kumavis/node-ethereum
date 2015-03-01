@@ -177,7 +177,7 @@ describe('basic app functions', function() {
   it('should subcribe to a topic', function(done){
     cmd = {
       'method': 'eth_newFilter',
-      'params': [{"topic":"12341234"}],
+      'params': [{"topic": address.toString('hex')}],
       'jsonrpc': '2.0',
       'id': 3
     }
@@ -193,7 +193,7 @@ describe('basic app functions', function() {
 
     function populateTrie(cb) {
       var account = new Account();
-      var code = '60ff60005358585860206000a3'; //some code that does some LOGs 
+      var code = new Buffer('60ff6000533360206000a1', 'hex'); //some code that does some LOGs 
       account.balance = 'ffffff';
       account.storeCode(app.vm.trie, code, function() {
         app.vm.trie.put(accountAddress, account.serialize(), cb);
