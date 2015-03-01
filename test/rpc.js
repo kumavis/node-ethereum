@@ -174,6 +174,16 @@ describe('basic app functions', function() {
   });
 
 
+  it('should subcribe to a topic', function(done){
+    cmd = {
+      'method': 'eth_newFilter',
+      'params': [{"topic":"12341234"}],
+      'jsonrpc': '2.0',
+      'id': 3
+    }
+    ws.send(JSON.stringify(cmd), done);
+  });
+
   it('send a tx that causes a log', function(done) {
 
     var accountAddress = ethUtil.pubToAddress(crypto.randomBytes(32));
@@ -201,7 +211,7 @@ describe('basic app functions', function() {
         'method': 'eth_signed_trans',
         'params': [tx.serialize().toString('hex')],
         'jsonrpc': '2.0',
-        'id': 2
+        'id': 4
       }
       ws.send(JSON.stringify(cmd));
     }
@@ -214,6 +224,22 @@ describe('basic app functions', function() {
     populateTrie(sendTx);
 
   });
+
+  it('should return logs after being pulled', function(done){
+    var cmd = {
+      'method': 'eth_changed',
+      'jsonrpc': '2.0',
+      'id': 5
+    };
+
+    ws.send(JSON.stringify(cmd));
+ 
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      done();
+    });
+
+  })
 
   it('should stop', function(done) {
     app.stop(done);
