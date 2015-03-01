@@ -27,6 +27,8 @@ var settings = {
 
 var ws;
 var mulAddress;
+var privateKey;
+var address;
 
 describe('basic app functions', function() {
 
@@ -36,7 +38,7 @@ describe('basic app functions', function() {
   });
 
   it('should generate genesis', function(done) {
-    app.vm.generateGenesis(allotment, function(){
+    app.vm.generateGenesis(allotment, function() {
       var block = new Block();
       block.header.stateRoot = app.vm.trie.root;
       app.blockchain.addBlock(block, done);
@@ -52,7 +54,7 @@ describe('basic app functions', function() {
       blocks.push(new Block(json));
     });
 
-    app.processBlocks(blocks, done);
+    app.blockProcesser.run(blocks, done);
   });
 
   it('should connect to the ws rpc', function(done) {
@@ -112,18 +114,18 @@ describe('basic app functions', function() {
 
   it('shoud send a transation', function(done) {
 
-    var privateKey = crypto.randomBytes(32);
-    var address = ethUtil.pubToAddress(ecdsa.createPublicKey(privateKey));
+    privateKey = crypto.randomBytes(32);
+    address = ethUtil.pubToAddress(ecdsa.createPublicKey(privateKey));
     var mulContract = '602b80600b60003960365660003560001a60008114156029576001356040526021356060526060516040510260805260206080f35b505b6000f3';
     mulAddress = ethUtil.generateAddress(address, new Buffer([1]));
 
-    function populateTrie(cb){
+    function populateTrie(cb) {
       var account = new Account();
       account.balance = 'ffffff';
-      app.vm.trie.put(address, account.serialize(), cb); 
+      app.vm.trie.put(address, account.serialize(), cb);
     }
 
-    function sendTx(){
+    function sendTx() {
       var tx = new Tx({
         data: mulContract,
         gasLimit: 5000,
@@ -138,7 +140,7 @@ describe('basic app functions', function() {
         'params': [tx.serialize().toString('hex')],
         'jsonrpc': '2.0',
         'id': 2
-      } 
+      }
       ws.send(JSON.stringify(cmd));
     }
 
@@ -155,7 +157,10 @@ describe('basic app functions', function() {
     var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
     var cmd = {
       'method': 'eth_call',
-      'params': {to: mulAddress.toString('hex'), data: data},
+      'params': {
+        to: mulAddress.toString('hex'),
+        data: data
+      },
       'jsonrpc': '2.0',
       'id': 2
     };
@@ -166,6 +171,48 @@ describe('basic app functions', function() {
       assert(msg.result === '0000000000000000000000000000000000000000000000000000000000090000');
       done();
     });
+  });
+
+
+  it('send a tx that causes a log', function(done) {
+
+    var accountAddress = ethUtil.pubToAddress(crypto.randomBytes(32));
+
+    function populateTrie(cb) {
+      var account = new Account();
+      var code = '60ff60005358585860206000a3'; //some code that does some LOGs 
+      account.balance = 'ffffff';
+      account.storeCode(app.vm.trie, code, function() {
+        app.vm.trie.put(accountAddress, account.serialize(), cb);
+      });
+    }
+
+    function sendTx() {
+      var tx = new Tx({
+        to: accountAddress,
+        gasLimit: 5000,
+        gasPrice: 1,
+        nonce: 1
+      })
+
+      tx.sign(privateKey);
+
+      cmd = {
+        'method': 'eth_signed_trans',
+        'params': [tx.serialize().toString('hex')],
+        'jsonrpc': '2.0',
+        'id': 2
+      }
+      ws.send(JSON.stringify(cmd));
+    }
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      done();
+    });
+
+    populateTrie(sendTx);
+
   });
 
   it('should stop', function(done) {
