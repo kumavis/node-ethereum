@@ -157,10 +157,10 @@ describe('basic app functions', function() {
     var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
     var cmd = {
       'method': 'eth_call',
-      'params': {
+      'params': [{
         to: mulAddress.toString('hex'),
         data: data
-      },
+      }],
       'jsonrpc': '2.0',
       'id': 2
     };
@@ -193,7 +193,7 @@ describe('basic app functions', function() {
 
     function populateTrie(cb) {
       var account = new Account();
-      var code = new Buffer('60ff6000533360206000a1', 'hex'); //some code that does some LOGs 
+      var code = new Buffer('60ff6000533360206000a1', 'hex'); //some code that does some LOGs
       account.balance = 'ffffff';
       account.storeCode(app.vm.trie, code, function() {
         app.vm.trie.put(accountAddress, account.serialize(), cb);
@@ -236,7 +236,7 @@ describe('basic app functions', function() {
     };
 
     ws.send(JSON.stringify(cmd));
- 
+
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       console.log(msg);
