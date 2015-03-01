@@ -177,7 +177,7 @@ describe('basic app functions', function() {
   it('should subcribe to a topic', function(done){
     cmd = {
       'method': 'eth_newFilter',
-      'params': [{"topic": address.toString('hex')}],
+      'params': [{"topic":[ethUtil.pad(address, 32).toString('hex')]}],
       'jsonrpc': '2.0',
       'id': 3
     }
