@@ -181,7 +181,10 @@ describe('basic app functions', function() {
       'jsonrpc': '2.0',
       'id': 3
     }
-    ws.send(JSON.stringify(cmd), done);
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(){
+      done();
+    });
   });
 
   it('send a tx that causes a log', function(done) {
@@ -208,7 +211,7 @@ describe('basic app functions', function() {
       tx.sign(privateKey);
 
       cmd = {
-        'method': 'eth_signed_trans',
+        'method': 'eth_signedTransact',
         'params': [tx.serialize().toString('hex')],
         'jsonrpc': '2.0',
         'id': 4
