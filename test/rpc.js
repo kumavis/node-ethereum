@@ -5,6 +5,7 @@ const Block = require('ethereumjs-lib').Block;
 const Account = require('ethereumjs-lib').Account;
 const Tx = require('ethereumjs-lib').Transaction;
 var jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
+var t = require('ethereum-tests').blockchainTests.basicBlockChain;
 const allotment = require('ethereum-tests').blockchainTests.basicBlockChain.allotment;
 const crypto = require('crypto');
 const ethUtil = require('ethereumjs-util');
@@ -83,7 +84,7 @@ describe('basic app functions', function() {
   it('balanceAt', function(done) {
     var cmd = {
       'method': 'eth_balanceAt',
-      'params': ['0f3388f4f086ca1666919a3e104d4335b915928e'],
+      'params': ['cd2a3d9f938e13cd947ec05abc7fe734df8dd826'],
       'jsonrpc': '2.0',
       'id': 1
     };
@@ -91,7 +92,7 @@ describe('basic app functions', function() {
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       assert.equal(msg.id, 1);
-      assert.equal(msg.result, '0de0b6b3a7640000');
+      assert.equal(msg.result, '0100000000000000000000000000000000000000000000000000');
       done();
     });
   });
@@ -99,7 +100,7 @@ describe('basic app functions', function() {
   it('balanceAt a given block', function(done) {
     var cmd = {
       'method': 'eth_balanceAt',
-      'params': ['8888f1f195afa192cfee860698584c030f4c9db1', 'da0bc84f4881690dcfbd8cfe5201ae729698e318397ab71df29fb0c42064fd04'],
+      'params': ['ca88d8a06020473dd34be02d62688c7e891133c0', '4f3f8351791aa121b770efba92b7d0004f56f25fd83b906c210b0a2a456af7f0'],
       'jsonrpc': '2.0',
       'id': 2
     };
@@ -107,7 +108,7 @@ describe('basic app functions', function() {
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       assert.equal(msg.id, 2);
-      assert.equal(msg.result, '059fd3ff87f1676000');
+      assert.equal(msg.result, '0340aad21b3b700000');
       done();
     });
   });
