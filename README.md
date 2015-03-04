@@ -1,6 +1,8 @@
 node-ethereum [![Build Status](https://travis-ci.org/ethereum/node-ethereum.svg)](https://travis-ci.org/ethereum/node-ethereum)
 ===============
 
+STILL UNSTABLE
+
 a simple standalone or embeddable Ethereum client written for Node.js.
 
 Install

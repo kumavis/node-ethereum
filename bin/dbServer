@@ -2,7 +2,7 @@
 var argv = require('minimist')(process.argv.slice(2));
 var multilevel = require('multilevel');
 var net = require('net');
-var level = require('levelup');
+var level = require('level');
 var Sublevel = require('level-sublevel');
 var enableDestroy = require('server-destroy');
 
