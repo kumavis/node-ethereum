@@ -30,6 +30,8 @@ var ws;
 var mulAddress;
 var privateKey;
 var address;
+var filterID;
+var accountAddress;
 
 describe('basic app functions', function() {
 
@@ -183,14 +185,16 @@ describe('basic app functions', function() {
       'id': 3
     }
     ws.send(JSON.stringify(cmd));
-    ws.once('message', function(){
+    ws.once('message', function(msg){
+      filterID = JSON.parse(msg).result;
+      // assert(filterID !== null);
       done();
     });
   });
 
   it('send a tx that causes a log', function(done) {
 
-    var accountAddress = ethUtil.pubToAddress(crypto.randomBytes(32));
+    accountAddress = ethUtil.pubToAddress(crypto.randomBytes(32));
 
     function populateTrie(cb) {
       var account = new Account();
@@ -240,7 +244,11 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      console.log(msg);
+      assert.equal(msg.result.length, 1);
+      assert.equal(msg.result[0].number, filterID, 'should return correct filter id');
+      assert.equal(msg.result[0].address, accountAddress.toString('hex'), 'should log correct address');
+      var data = 'ff00000000000000000000000000000000000000000000000000000000000000';
+      assert.equal(msg.result[0].data, data, 'should log correct data');
       done();
     });
 
