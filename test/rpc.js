@@ -102,7 +102,7 @@ describe('basic app functions', function() {
   it('balanceAt a given block', function(done) {
     var cmd = {
       'method': 'eth_balanceAt',
-      'params': ['ca88d8a06020473dd34be02d62688c7e891133c0', '4f3f8351791aa121b770efba92b7d0004f56f25fd83b906c210b0a2a456af7f0'],
+      'params': ['ca88d8a06020473dd34be02d62688c7e891133c0', '25dde3cae308f67e1dd50d69d41887a8f4879c01a940a3379985e40269b0418b'],
       'jsonrpc': '2.0',
       'id': 2
     };
@@ -110,7 +110,7 @@ describe('basic app functions', function() {
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       assert.equal(msg.id, 2);
-      assert.equal(msg.result, '0340aad21b3b700000');
+      assert.equal(msg.result, '53444835ec580000');
       done();
     });
   });
