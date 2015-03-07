@@ -83,6 +83,22 @@ describe('basic app functions', function() {
     });
   });
 
+  it('it check if it is listening', function(done) {
+    var cmd = {
+      'method': 'eth_listening',
+      'params': [],
+      'jsonrpc': '2.0',
+      'id': 20
+    };
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert.equal(msg.id, 20);
+      assert.equal(msg.result, false);
+      done();
+    });
+  });
+
   it('balanceAt', function(done) {
     var cmd = {
       'method': 'eth_balanceAt',
