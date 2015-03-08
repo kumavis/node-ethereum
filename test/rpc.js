@@ -246,7 +246,6 @@ describe('basic app functions', function() {
     });
 
     populateTrie(sendTx);
-
   });
 
   it('should return logs after being pulled', function(done){
@@ -265,6 +264,25 @@ describe('basic app functions', function() {
       assert.equal(msg.result[0].address, accountAddress.toString('hex'), 'should log correct address');
       var data = 'ff00000000000000000000000000000000000000000000000000000000000000';
       assert.equal(msg.result[0].data, data, 'should log correct data');
+      done();
+    });
+
+  });
+
+  it('eth_codeAt', function(done){
+  
+    var cmd = {
+      'method': 'eth_codeAt',
+      'params': [accountAddress.toString('hex')],
+      'jsonrpc': '2.0',
+      'id': 11
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert.equal(msg.result, '60ff6000533360206000a1', 'should have correct code');
       done();
     });
 
