@@ -304,8 +304,26 @@ describe('basic app functions', function() {
       assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
       done();
     });
-
   });
+
+  it('eth_number', function(done){
+  
+    var cmd = {
+      'method': 'eth_number',
+      'jsonrpc': '2.0',
+      'id': 11
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      //todo figure out why its not reading from the testDB
+      console.log(msg);
+      done();
+    });
+  });
+
 
   it('should stop', function(done) {
     app.stop(done);
