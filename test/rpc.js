@@ -286,7 +286,26 @@ describe('basic app functions', function() {
       done();
     });
 
-  })
+  });
+
+  it('eth_blockByNumber', function(done){
+  
+    var cmd = {
+      'method': 'eth_blockByNumber',
+      'params': [2],
+      'jsonrpc': '2.0',
+      'id': 11
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
+      done();
+    });
+
+  });
 
   it('should stop', function(done) {
     app.stop(done);
