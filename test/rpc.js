@@ -187,7 +187,26 @@ describe('basic app functions', function() {
     ws.send(JSON.stringify(cmd));
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      assert(msg.result === '0000000000000000000000000000000000000000000000000000000000090000');
+      assert(msg.result === '0x0000000000000000000000000000000000000000000000000000000000090000');
+      done();
+    });
+  });
+
+  it('should make a call to an non-existant contract', function(done) {
+    var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
+    var cmd = {
+      'method': 'eth_call',
+      'params': [{
+        to: '0999'
+      }],
+      'jsonrpc': '2.0',
+      'id': 2
+    };
+
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert(msg.result === null);
       done();
     });
   });
