@@ -110,7 +110,7 @@ describe('basic app functions', function() {
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       assert.equal(msg.id, 1);
-      assert.equal(msg.result, '0100000000000000000000000000000000000000000000000000');
+      assert.equal(msg.result, '0x0100000000000000000000000000000000000000000000000000');
       done();
     });
   });
@@ -126,7 +126,7 @@ describe('basic app functions', function() {
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       assert.equal(msg.id, 2);
-      assert.equal(msg.result, '53444835ec580000');
+      assert.equal(msg.result, '0x53444835ec580000');
       done();
     });
   });
@@ -282,7 +282,7 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      assert.equal(msg.result, '60ff6000533360206000a1', 'should have correct code');
+      assert.equal(msg.result, '0x60ff6000533360206000a1', 'should have correct code');
       done();
     });
 
