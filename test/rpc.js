@@ -99,9 +99,9 @@ describe('basic app functions', function() {
     });
   });
 
-  it('balanceAt', function(done) {
+  it('getBalance', function(done) {
     var cmd = {
-      'method': 'eth_balanceAt',
+      'method': 'eth_getBalance',
       'params': ['cd2a3d9f938e13cd947ec05abc7fe734df8dd826'],
       'jsonrpc': '2.0',
       'id': 1
@@ -115,9 +115,9 @@ describe('basic app functions', function() {
     });
   });
 
-  it('balanceAt a given block', function(done) {
+  it('get balance a given block', function(done) {
     var cmd = {
-      'method': 'eth_balanceAt',
+      'method': 'eth_getBalance',
       'params': ['ca88d8a06020473dd34be02d62688c7e891133c0', '25dde3cae308f67e1dd50d69d41887a8f4879c01a940a3379985e40269b0418b'],
       'jsonrpc': '2.0',
       'id': 2
@@ -288,10 +288,10 @@ describe('basic app functions', function() {
 
   });
 
-  it('eth_codeAt', function(done){
+  it('eth_getCode', function(done){
   
     var cmd = {
-      'method': 'eth_codeAt',
+      'method': 'eth_getCode',
       'params': [accountAddress.toString('hex')],
       'jsonrpc': '2.0',
       'id': 11
