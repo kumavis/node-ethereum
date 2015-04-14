@@ -229,7 +229,7 @@ describe('basic app functions', function() {
     function sendTx() {
       var tx = new Tx({
         to: accountAddress,
-        gasLimit: 5000,
+        gas: 500000,
         gasPrice: 1,
         nonce: 1
       })
@@ -290,8 +290,7 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      console.log(msg);
-      // assert.equal(msg.result, '0x60ff6000533360206000a1', 'should have correct code');
+      assert.equal(msg.result, '0x60ff6000533360206000a1', 'should have correct code');
       done();
     });
   });
