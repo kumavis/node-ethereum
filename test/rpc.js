@@ -131,22 +131,6 @@ describe('basic app functions', function() {
     });
   });
 
-  // it('get balance a given block', function(done) {
-  //   var cmd = {
-  //     'method': 'eth_getBalance',
-  //     'params': ['ca88d8a06020473dd34be02d62688c7e891133c0', '25dde3cae308f67e1dd50d69d41887a8f4879c01a940a3379985e40269b0418b'],
-  //     'jsonrpc': '2.0',
-  //     'id': 2
-  //   };
-  //   ws.send(JSON.stringify(cmd));
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     assert.equal(msg.id, 2);
-  //     assert.equal(msg.result, '0x53444835ec580000');
-  //     done();
-  //   });
-  // });
-  //
   it('shoud send a transation', function(done) {
 
     privateKey = crypto.randomBytes(32);
@@ -189,20 +173,6 @@ describe('basic app functions', function() {
     });
   });
 
-  it('should get code', function(done){
-    var cmd = {
-      'method': 'eth_getCode',
-      'params': [mulAddress.toString('hex')],
-      'jsonrpc': '2.0',
-      'id': 1
-    };
-    ws.send(JSON.stringify(cmd));
-    ws.once('message', function(msg) {
-      msg = JSON.parse(msg);
-      done();
-    });
-  })
-
   it('should make a call', function(done) {
     var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
     var cmd = {
@@ -226,44 +196,142 @@ describe('basic app functions', function() {
     });
   });
 
-  // it('should make a call to an non-existant contract', function(done) {
-  //   var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
-  //   var cmd = {
-  //     'method': 'eth_call',
-  //     'params': [{
-  //       to: '0999'
-  //     }],
-  //     'jsonrpc': '2.0',
-  //     'id': 2
-  //   };
 
-  //   ws.send(JSON.stringify(cmd));
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     assert(msg.result === null);
-  //     done();
-  //   });
-  // });
+  it('should subcribe to a topic', function(done){
+    cmd = {
+      'method': 'eth_newFilter',
+      'params': [{"topic":[ethUtil.pad(address, 32).toString('hex')]}],
+      'jsonrpc': '2.0',
+      'id': 3
+    }
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg){
+      filterID = JSON.parse(msg).result;
+      // assert(filterID !== null);
+      done();
+    });
+  });
 
 
-  // it('should subcribe to a topic', function(done){
-  //   cmd = {
-  //     'method': 'eth_newFilter',
-  //     'params': [{"topic":[ethUtil.pad(address, 32).toString('hex')]}],
-  //     'jsonrpc': '2.0',
-  //     'id': 3
-  //   }
-  //   ws.send(JSON.stringify(cmd));
-  //   ws.once('message', function(msg){
-  //     filterID = JSON.parse(msg).result;
-  //     // assert(filterID !== null);
-  //     done();
-  //   });
-  // });
-  //     done();
-  //   });
-  // });
+  it('send a tx that causes a log', function(done) {
 
+    accountAddress = ethUtil.pubToAddress(crypto.randomBytes(32));
+
+    function populateTrie(cb) {
+      var account = new Account();
+      var code = new Buffer('60ff6000533360206000a1', 'hex'); //some code that does some LOGs
+      account.balance = 'ffffff';
+      account.storeCode(app.vm.trie, code, function() {
+        app.vm.trie.put(accountAddress, account.serialize(), cb);
+      });
+    }
+
+    function sendTx() {
+      var tx = new Tx({
+        to: accountAddress,
+        gasLimit: 5000,
+        gasPrice: 1,
+        nonce: 1
+      })
+
+      tx.sign(privateKey);
+
+      cmd = {
+        'method': 'eth_signedTransact',
+        'params': [tx.serialize().toString('hex')],
+        'jsonrpc': '2.0',
+        'id': 4
+      }
+      ws.send(JSON.stringify(cmd));
+    }
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      done();
+    });
+
+    populateTrie(sendTx);
+  });
+
+
+  it.skip('should return logs after being pulled', function(done){
+    var cmd = {
+      'method': 'eth_getFilterChanges',
+      'jsonrpc': '2.0',
+      'params': [filterID],
+      'id': 5
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      console.log(msg);
+      assert.equal(msg.result.length, 1);
+      assert.equal(msg.result[0].number, filterID, 'should return correct filter id');
+      assert.equal(msg.result[0].address, accountAddress.toString('hex'), 'should log correct address');
+      var data = 'ff00000000000000000000000000000000000000000000000000000000000000';
+      assert.equal(msg.result[0].data, data, 'should log correct data');
+      done();
+    });
+
+  });
+
+  it('eth_getCode', function(done){
+  
+    var cmd = {
+      'method': 'eth_getCode',
+      'params': [accountAddress.toString('hex')],
+      'jsonrpc': '2.0',
+      'id': 11
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      console.log(msg);
+      // assert.equal(msg.result, '0x60ff6000533360206000a1', 'should have correct code');
+      done();
+    });
+  });
+
+  //we need blocks in chain to test
+  it.skip('eth_blockByNumber', function(done){
+  
+    var cmd = {
+      'method': 'eth_getBlockByNumber',
+      'params': [2],
+      'jsonrpc': '2.0',
+      'id': 11
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      console.log(msg);
+      msg = JSON.parse(msg);
+      // assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
+      done();
+    });
+  });
+
+  it('eth_number', function(done){
+  
+    var cmd = {
+      'method': 'eth_number',
+      'jsonrpc': '2.0',
+      'id': 11
+    };
+
+    ws.send(JSON.stringify(cmd));
+
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      assert(msg.result === 0)
+      done();
+    });
+  });
 
   it('should stop', function(done) {
     app.stop(done);
