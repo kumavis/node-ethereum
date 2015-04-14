@@ -59,8 +59,6 @@ describe('basic app functions', function() {
   it('should generate genesis', function(done) {
     // app.vm.db = db;
     app.vm.on('afterTx', function(){
-      console.log('afterTx - capturing state in block')
-      console.log('stateRoot: ' +  app.vm.trie.root.toString('hex'));
       var root = app.vm.trie.root
       var block = new Block()
       block.header.stateRoot = root
@@ -148,7 +146,7 @@ describe('basic app functions', function() {
   //     done();
   //   });
   // });
-
+  //
   it('shoud send a transation', function(done) {
 
     privateKey = crypto.randomBytes(32);
@@ -158,14 +156,14 @@ describe('basic app functions', function() {
 
     function populateTrie(cb) {
       var account = new Account();
-      account.balance = 'ffffff';
+      account.balance = 'ffffffffffffffffff';
       app.vm.trie.put(address, account.serialize(), cb);
     }
 
     function sendTx() {
       var tx = new Tx({
         data: mulContract,
-        gasLimit: 5000,
+        gasLimit: 50000000,
         gasPrice: 1,
         nonce: 0
       })
@@ -185,18 +183,36 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
+      assert(msg.result === '0x' + mulAddress.toString('hex'))
       //check something?
       done();
     });
   });
+
+  it('should get code', function(done){
+    var cmd = {
+      'method': 'eth_getCode',
+      'params': [mulAddress.toString('hex')],
+      'jsonrpc': '2.0',
+      'id': 1
+    };
+    ws.send(JSON.stringify(cmd));
+    ws.once('message', function(msg) {
+      msg = JSON.parse(msg);
+      done();
+    });
+  })
 
   it('should make a call', function(done) {
     var data = '00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003';
     var cmd = {
       'method': 'eth_call',
       'params': [{
+        from: '0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826',
         to: mulAddress.toString('hex'),
-        data: data
+        data: data,
+        gas: 99999999999,
+        gasPrice: 1
       }],
       'jsonrpc': '2.0',
       'id': 2
@@ -244,119 +260,6 @@ describe('basic app functions', function() {
   //     done();
   //   });
   // });
-
-  // it('send a tx that causes a log', function(done) {
-
-  //   accountAddress = ethUtil.pubToAddress(crypto.randomBytes(32));
-
-  //   function populateTrie(cb) {
-  //     var account = new Account();
-  //     var code = new Buffer('60ff6000533360206000a1', 'hex'); //some code that does some LOGs
-  //     account.balance = 'ffffff';
-  //     account.storeCode(app.vm.trie, code, function() {
-  //       app.vm.trie.put(accountAddress, account.serialize(), cb);
-  //     });
-  //   }
-
-  //   function sendTx() {
-  //     var tx = new Tx({
-  //       to: accountAddress,
-  //       gasLimit: 5000,
-  //       gasPrice: 1,
-  //       nonce: 1
-  //     })
-
-  //     tx.sign(privateKey);
-
-  //     cmd = {
-  //       'method': 'eth_signedTransact',
-  //       'params': [tx.serialize().toString('hex')],
-  //       'jsonrpc': '2.0',
-  //       'id': 4
-  //     }
-  //     ws.send(JSON.stringify(cmd));
-  //   }
-
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     done();
-  //   });
-
-  //   populateTrie(sendTx);
-  // });
-
-  // it('should return logs after being pulled', function(done){
-  //   var cmd = {
-  //     'method': 'eth_changed',
-  //     'jsonrpc': '2.0',
-  //     'id': 5
-  //   };
-
-  //   ws.send(JSON.stringify(cmd));
-
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     assert.equal(msg.result.length, 1);
-  //     assert.equal(msg.result[0].number, filterID, 'should return correct filter id');
-  //     assert.equal(msg.result[0].address, accountAddress.toString('hex'), 'should log correct address');
-  //     var data = 'ff00000000000000000000000000000000000000000000000000000000000000';
-  //     assert.equal(msg.result[0].data, data, 'should log correct data');
-  //     done();
-  //   });
-
-  // });
-
-  // it('eth_getCode', function(done){
-  
-  //   var cmd = {
-  //     'method': 'eth_getCode',
-  //     'params': [accountAddress.toString('hex')],
-  //     'jsonrpc': '2.0',
-  //     'id': 11
-  //   };
-
-  //   ws.send(JSON.stringify(cmd));
-
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     assert.equal(msg.result, '0x60ff6000533360206000a1', 'should have correct code');
-  //     done();
-  //   });
-
-  // });
-
-  // it('eth_blockByNumber', function(done){
-  
-  //   var cmd = {
-  //     'method': 'eth_blockByNumber',
-  //     'params': [2],
-  //     'jsonrpc': '2.0',
-  //     'id': 11
-  //   };
-
-  //   ws.send(JSON.stringify(cmd));
-
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
-  //     done();
-  //   });
-  // });
-
-  // it('eth_number', function(done){
-  
-  //   var cmd = {
-  //     'method': 'eth_number',
-  //     'jsonrpc': '2.0',
-  //     'id': 11
-  //   };
-
-  //   ws.send(JSON.stringify(cmd));
-
-  //   ws.once('message', function(msg) {
-  //     msg = JSON.parse(msg);
-  //     //todo figure out why its not reading from the testDB
-  //     console.log(msg);
   //     done();
   //   });
   // });
