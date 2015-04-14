@@ -156,7 +156,7 @@ describe('basic app functions', function() {
 
     function populateTrie(cb) {
       var account = new Account();
-      account.balance = 'ffffffffffffffffff';
+      account.balance = '0xffffffffffffffffff';
       app.vm.trie.put(address, account.serialize(), cb);
     }
 
