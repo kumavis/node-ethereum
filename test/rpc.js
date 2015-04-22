@@ -220,7 +220,7 @@ describe('basic app functions', function() {
     function populateTrie(cb) {
       var account = new Account();
       var code = new Buffer('60ff6000533360206000a1', 'hex'); //some code that does some LOGs
-      account.balance = 'ffffff';
+      account.balance = 'ffffffffffffff';
       account.storeCode(app.vm.trie, code, function() {
         app.vm.trie.put(accountAddress, account.serialize(), cb);
       });
@@ -229,7 +229,7 @@ describe('basic app functions', function() {
     function sendTx() {
       var tx = new Tx({
         to: accountAddress,
-        gas: 500000,
+        gasLimit: 100000,
         gasPrice: 1,
         nonce: 1
       })
@@ -246,6 +246,7 @@ describe('basic app functions', function() {
     }
 
     ws.once('message', function(msg) {
+      console.log(msg);
       msg = JSON.parse(msg);
       done();
     });
@@ -254,7 +255,7 @@ describe('basic app functions', function() {
   });
 
 
-  it.skip('should return logs after being pulled', function(done){
+  it('should return logs after being pulled', function(done){
     var cmd = {
       'method': 'eth_getFilterChanges',
       'jsonrpc': '2.0',
@@ -266,9 +267,7 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      console.log(msg);
       assert.equal(msg.result.length, 1);
-      assert.equal(msg.result[0].number, filterID, 'should return correct filter id');
       assert.equal(msg.result[0].address, accountAddress.toString('hex'), 'should log correct address');
       var data = 'ff00000000000000000000000000000000000000000000000000000000000000';
       assert.equal(msg.result[0].data, data, 'should log correct data');
@@ -308,7 +307,6 @@ describe('basic app functions', function() {
     ws.send(JSON.stringify(cmd));
 
     ws.once('message', function(msg) {
-      console.log(msg);
       msg = JSON.parse(msg);
       // assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
       done();

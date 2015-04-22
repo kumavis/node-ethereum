@@ -1,6 +1,6 @@
 {
   "name": "node-ethereum",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "a simple standalone or embeddable Ethereum client written for Node.js",
   "repository": {
     "type": "git",
@@ -29,8 +29,8 @@
     "async": "*",
     "bn.js": "^2.0.1",
     "body-parser": "~1.10.1",
-    "ethereumjs-lib": "0.2.4",
-    "ethereumjs-util": "0.0.10",
+    "ethereumjs-lib": "0.3.0",
+    "ethereumjs-util": "0.1.0",
     "express": "~4.11.0",
     "external-ip": "^0.2.3",
     "is-my-json-valid": "^2.3.0",
@@ -46,6 +46,7 @@
     "secp256k1": "0.0.15",
     "semaphore": "~1.0.1",
     "server-destroy": "^1.0.0",
+    "stream-to-buffer": "^0.1.0",
     "ws": "git+https://github.com/wanderer/ws"
   },
   "devDependencies": {
