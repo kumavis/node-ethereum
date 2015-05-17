@@ -26,7 +26,7 @@ const allotment = {
   "cc45122d8b7fa0b1eaa6b29e0fb561422a9239d0": "51387394000000000000000",
   "b7576e9d314df41ec5506494293afb1bd5d3f65d": "69423399000000000000000"
 }
- 
+
 var settings = {
   'network': false,
   'path': './db/',
@@ -34,11 +34,11 @@ var settings = {
     'port': 30304
   },
   'dbServer': true,
-  'webui': false,
   'upnp': false,
-  'rpc': true,
-  'ws': {
-    'port': 40401
+  'rpc': {
+    'ws': {
+      'port': 40401
+    }
   }
 };
 
@@ -58,12 +58,12 @@ describe('basic app functions', function() {
 
   it('should generate genesis', function(done) {
     // app.vm.db = db;
-    app.vm.on('afterTx', function(){
+    app.vm.on('afterTx', function() {
       var root = app.vm.trie.root
       var block = new Block()
       block.header.stateRoot = root
       block.header.parentHash = app.blockchain.head.hash()
-      app.blockchain.addBlock(block, function(){
+      app.blockchain.addBlock(block, function() {
         console.log('added block to blockchain')
       })
     })
@@ -77,7 +77,7 @@ describe('basic app functions', function() {
   });
 
   it('should connect to the ws rpc', function(done) {
-    ws = new Ws('ws://localhost:' + settings.ws.port);
+    ws = new Ws('ws://localhost:' + settings.rpc.ws.port);
     ws.on('open', function open() {
       done();
     });
@@ -168,7 +168,7 @@ describe('basic app functions', function() {
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       assert(msg.result === '0x' + mulAddress.toString('hex'))
-      //check something?
+        //check something?
       done();
     });
   });
@@ -197,15 +197,17 @@ describe('basic app functions', function() {
   });
 
 
-  it('should subcribe to a topic', function(done){
+  it('should subcribe to a topic', function(done) {
     cmd = {
       'method': 'eth_newFilter',
-      'params': [{"topic":[ethUtil.pad(address, 32).toString('hex')]}],
+      'params': [{
+        "topic": [ethUtil.pad(address, 32).toString('hex')]
+      }],
       'jsonrpc': '2.0',
       'id': 3
     }
     ws.send(JSON.stringify(cmd));
-    ws.once('message', function(msg){
+    ws.once('message', function(msg) {
       filterID = JSON.parse(msg).result;
       // assert(filterID !== null);
       done();
@@ -255,7 +257,7 @@ describe('basic app functions', function() {
   });
 
 
-  it('should return logs after being pulled', function(done){
+  it('should return logs after being pulled', function(done) {
     var cmd = {
       'method': 'eth_getFilterChanges',
       'jsonrpc': '2.0',
@@ -276,8 +278,8 @@ describe('basic app functions', function() {
 
   });
 
-  it('eth_getCode', function(done){
-  
+  it('eth_getCode', function(done) {
+
     var cmd = {
       'method': 'eth_getCode',
       'params': [accountAddress.toString('hex')],
@@ -295,8 +297,8 @@ describe('basic app functions', function() {
   });
 
   //we need blocks in chain to test
-  it.skip('eth_blockByNumber', function(done){
-  
+  it.skip('eth_blockByNumber', function(done) {
+
     var cmd = {
       'method': 'eth_getBlockByNumber',
       'params': [2],
@@ -313,8 +315,8 @@ describe('basic app functions', function() {
     });
   });
 
-  it('eth_number', function(done){
-  
+  it('eth_number', function(done) {
+
     var cmd = {
       'method': 'eth_number',
       'jsonrpc': '2.0',
