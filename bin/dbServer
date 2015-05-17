@@ -18,7 +18,7 @@ if (argv.help) {
 
 
 if(!argv._[0]){
-  console.log('<port> and <path> path is required');
+  console.log('<path> <port> is required. usage `dbServer 838383 ./myDB`');
   process.exit();
 }else if(!argv._[1]){
   console.log('<port> is required');
@@ -27,6 +27,7 @@ if(!argv._[0]){
 
 var port = argv._[1];
 var path = argv._[0];
+console.log(path);
 var db = Sublevel(level(path));
 var isShutingDown = false;
 
