@@ -26,7 +26,7 @@ describe('basic app functions', function() {
       fs.mkdirSync(path.join(__dirname, '/testdb'));
     } catch (e) {}
 
-    dbServer = cp.fork(path.join(__dirname, '/../bin/dbServer'), [path.join(__dirname, '/testdb'), 30304]);
+    dbServer = cp.fork(path.join(__dirname, '/../bin/dbServer'), [path.join(__dirname, '/testdb'), 30306]);
     dbServer.once('message', function(){
       done();
     });
