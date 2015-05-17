@@ -31,7 +31,7 @@ var settings = {
   'network': false,
   'path': './db/',
   'db': {
-    'port': 30304
+    'port': 30305
   },
   'dbServer': true,
   'upnp': false,
