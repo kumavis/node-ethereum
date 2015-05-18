@@ -201,7 +201,7 @@ describe('basic app functions', function() {
     cmd = {
       'method': 'eth_newFilter',
       'params': [{
-        "topic": [ethUtil.pad(address, 32).toString('hex')]
+        "topic": ['0x' + ethUtil.pad(address, 32).toString('hex')]
       }],
       'jsonrpc': '2.0',
       'id': 3
