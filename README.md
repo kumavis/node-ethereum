@@ -13,7 +13,7 @@ Install
 
 Run
 ===
-`./bin/ethereum`
+`./bin/neth`
 
 Embed
 ===
