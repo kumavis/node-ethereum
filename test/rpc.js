@@ -307,7 +307,6 @@ describe('basic app functions', function() {
     };
 
     ws.send(JSON.stringify(cmd));
-
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
       // assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
