@@ -9,6 +9,7 @@
        "curly": 0,
        "new-cap": 0,
        "no-use-before-define": 0,
+       "no-shadow": 1,
        "quotes":  [1, "single"],
        "no-trailing-spaces": 1,
        "no-path-concat": 1,
