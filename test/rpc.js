@@ -4,8 +4,6 @@ const Ws = require('ws');
 const Block = require('ethereumjs-lib').Block;
 const Account = require('ethereumjs-lib').Account;
 const Tx = require('ethereumjs-lib').Transaction;
-var jsonBC = require('ethereum-tests').blockchainTests.basicBlockChain.blockchain;
-var t = require('ethereum-tests').blockchainTests.basicBlockChain;
 
 const crypto = require('crypto');
 const ethUtil = require('ethereumjs-util');
@@ -85,7 +83,7 @@ describe('basic app functions', function() {
 
   it('it should get the peer count', function(done) {
     var cmd = {
-      'method': 'eth_peerCount',
+      'method': 'net_peerCount',
       'params': [],
       'jsonrpc': '2.0',
       'id': 0
@@ -209,7 +207,7 @@ describe('basic app functions', function() {
     ws.send(JSON.stringify(cmd));
     ws.once('message', function(msg) {
       filterID = JSON.parse(msg).result;
-      // assert(filterID !== null);
+      assert(filterID !== null);
       done();
     });
   });
@@ -297,7 +295,7 @@ describe('basic app functions', function() {
   });
 
   //we need blocks in chain to test
-  it.skip('eth_blockByNumber', function(done) {
+  it.skip('eth_getBlockByNumber', function(done) {
 
     var cmd = {
       'method': 'eth_getBlockByNumber',
@@ -309,15 +307,16 @@ describe('basic app functions', function() {
     ws.send(JSON.stringify(cmd));
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      // assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
+      assert(msg.status !== 'failed');
+      assert.equal(msg.result.header.parentHash, '516dccada94c7dd9936747c6819be3d28f9e91a46f18aada525d036ef09867be');
       done();
     });
   });
 
-  it('eth_number', function(done) {
+  it('eth_blockNumber', function(done) {
 
     var cmd = {
-      'method': 'eth_number',
+      'method': 'eth_blockNumber',
       'jsonrpc': '2.0',
       'id': 11
     };
@@ -326,7 +325,7 @@ describe('basic app functions', function() {
 
     ws.once('message', function(msg) {
       msg = JSON.parse(msg);
-      assert(msg.result === 0)
+      assert.equal(msg.result, '0x')
       done();
     });
   });

@@ -6,6 +6,8 @@
 *.pid
 *.gz
 
+db
+
 pids
 results
 
